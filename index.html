@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Shower Presentation Engine</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=792, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen.css">
+</head>
+<body class="list">
+	<header class="caption">
+		<h1>Choose your scheduler</h1>
+
+	</header>
+	<section class="slide cover" id="Cover"><div>
+		<h2>Choose your scheduler</h2>
+		<p>Sivaram Mothiki / @smothiki </p>
+		<img src="pictures/deis-logo.png" alt="">
+		<!--
+			To apply styles to the certain slides
+			set slide ID to get needed elements
+			-->
+		<style>
+		#Cover {
+			background-color: #FFF;
+		}
+			#Cover h2 {
+				margin:30px 0 0;
+				color:#000;
+				text-align:center;
+				font-size:70px;
+				}
+			#Cover p {
+				margin:18px 0 0;
+				text-align:center;
+				color:#000;
+				font-style:italic;
+				font-size:40px;
+				}
+				#Cover img {
+					margin:18px 0 0;
+					align:bottom;
+					}
+		</style>
+	</div></section>
+	<section class="slide"><div id ="over">
+		<h2>Overview</h2>
+		<ol>
+			<li>Scheduler architechtures
+			<ul>
+			<li>Monolithic
+			<ul>
+				<li>Fleet, Swarm</li>
+			</ul>
+		</li>
+			<li>Two Level Centralized scheduler
+			<ul>
+				<li>Mesos</li>
+			</ul>
+		</li>
+			<li>Shared State Scheduler
+			<ul>
+				<li>Google Omega</li>
+			</ul>
+		</li>
+			<li>Kubernetes</li>
+			<li>Sparrow - Low Latency Decentralized Scheduler</li>
+		</ul>
+	</li>
+			<li>DEIS and scheduling</li>
+		</ol>
+
+	</div></section>
+	<style>
+	#over li {
+			font-size:20px;
+			}
+			</style>
+	<section class="slide"><div>
+		<h2>Monolithic Schedulers</h2>
+		<ol>
+			<li>A centralized Scheduling module </li>
+			<li>Acheiving parellelism is highly impossible</li>
+			<li>Good for small cluster size </li>
+			</ol>
+			<p> Fleet uses least loaded machine to schedule <b>SystemD</b> units </p>
+	</div></section>
+	<section class="slide"><div id="swarm">
+		<h2>Swarm</h2>
+		<ol>
+			<li>From Docker team . Extension of <b>Libswarm</b> </li>
+
+			<li>Pros
+			<ul>
+				<li>Easy to deploy </li>
+				<li>Schedules using Docker client API </li>
+			<li>Pluggable monolithic scheduling algorithms </li>
+		<li> Resource aware scheduler </li>
+	</ul>
+	</li>
+	<li>Cons
+	<ul>
+		<li>Very early stage of development </li>
+		<li>No fail-over mechanism for nodes in the cluster </li>
+		<li>Integer values of CPUs  </li>
+	</ul>
+</li>
+<li> WIP Mesos integration </li>
+			</ol>
+	</div></section>
+	<style>
+	#swarm li {
+			font-size:20px;
+			}
+			</style>
+	<section class="slide"><div>
+		<h2>Two Level Scheduling with Mesos</h2>
+		<img src="pictures/mesos-1.jpg" alt=""  height="400" width="500">
+		<p class="note"> Ref: http://mesos.apache.org/documentation/latest/mesos-architecture/</p>
+	</div></section>
+
+	<section class="slide"><div>
+		<h2>Two Level Scheduling with Mesos</h2>
+		<img src="pictures/mesos-ex.jpg" alt=""  height="400" width="500">
+	</div></section>
+	<section class="slide"><div id="mesos">
+		<h2>Two Level Scheduling with Mesos</h2>
+	<ol>
+		<li>Dynamic partitioning </li>
+		<li>Slaves reports available resources to master </li>
+		<li>Master decides how many resources to offer to each Framework according to policies</li>
+		<li>frameworks () scheduler and Uses default executor "sudo -c")</li>
+		<li>A Resource offers are locked </li>
+		<li>A poor scheduler logic might increase the scheduling latency and lock the resource offer for other Frameworks</li>
+	</ol>
+ </div></section>
+<style>
+#mesos li {
+		font-size:20px;
+		}
+		</style>
+
+<section class="slide"><div>
+	<h2>Shared State Scheduling (Omega)</h2>
+<ol>
+	<li>Designed for Google scale workloads </li>
+	<li>Maintains a copy of available resources in the cluster called <b>cell state</b> </li>
+	<li>Each schduler tries to update cell state atomically during a placement decision </li>
+	<li>If an update is failed scheduler tries to resync cell state and retries the job</li>
+	<li>As updates of Cell state are atomic schedulers can operate in parallel</li>
+</ol>
+</div></section>
+
+<section class="slide"><div>
+	<h2>Kubernetes</h2>
+<ol>
+	<li>A better monolithic scheduler </li>
+	<li>Pluggable scheduling algorithms </li>
+	<li>Introduces concept of POD (A group of colocated containers sharing same namespaces) </li>
+	<li>Demands unique IP for each POD, which can be acheived by using Flannel or using overlay networks</li>
+	<li>Lots of cool features (labels, services, Health Checks, CAdvisor)</li>
+</ol>
+</div></section>
+
+<section class="slide"><div id="sparrow">
+	<h2>Sparrow - A low latency dencentralized scheduler</h2>
+	<img src="pictures/sparrow.png" alt=""  height="300" width="500">
+
+</div></section>
+<style>
+#sparrow li {
+		font-size:20px;
+		}
+		</style>
+
+<section class="slide"><div>
+	<h2>DEIS and scheduling</h2>
+	<img src="pictures/Deisarch.png" alt=""  height="400" width="700">
+</div></section>
+<section class="slide"><div>
+	<h2>DEIS and scheduling contd...</h2>
+	<ol>
+		<li>Provides a Pluggable Scheduling layer. </li>
+		<li><b>deisctl config controller set schedulerModule="your favorite scheduler"</b></li>
+		<li class="next">DEIS  comes with Fleet by default </li>
+		<li class="next">We have a WIP release preview Swarm scheduler integration </li>
+		<li class="next">Mock prototype of DEIS that launches a POD to a kubernetes cluster</li>
+		<li class="next">Mock of Mesos integration with DEIS using Marathon Framework</li>
+	</ol>
+</div></section>
+
+<section class="slide"><div id ="dream">
+		<h2>Dream Big</h2>
+		<p> deis scale web=10000</p>
+		<p> Thank You </p>
+	</div></section>
+	<div class="progress"><div></div></div>
+	<script src="shower/shower.min.js"></script>
+	<!-- Copyright © 2014 Yours Truly, Famous Inc. -->
+	<!-- Photos by John Carey, fiftyfootshadows.net -->
+</body>
+</html>
